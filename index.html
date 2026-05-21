@@ -40,6 +40,7 @@
             color: var(--text-dark);
             line-height: 1.6;
             background-color: var(--white);
+            overflow-x: hidden; /* Evita rolagem horizontal quando o menu mobile abrir */
         }
 
         a {
@@ -136,6 +137,14 @@
 
         .nav-links li a:hover {
             color: var(--orange);
+        }
+
+        /* ÍCONE DO MENU HAMBÚRGUER (Escondido no Desktop) */
+        .hamburger {
+            display: none;
+            font-size: 1.8rem;
+            color: var(--primary-blue);
+            cursor: pointer;
         }
 
         /* ================= HERO SECTION ================= */
@@ -565,8 +574,42 @@
         }
 
         @media (max-width: 768px) {
-            .header-content { flex-direction: column; height: auto; padding: 15px 0; gap: 15px; }
-            .nav-links { display: none; }
+            /* Ajustes para o cabeçalho no celular */
+            .header-content {
+                flex-direction: row; /* Mantém logo e menu na mesma linha */
+                padding: 0 20px;
+            }
+            .header-content > .btn-orange {
+                display: none; /* Esconde o botão do topo no mobile */
+            }
+            .hamburger {
+                display: block; /* Mostra o ícone de hambúrguer */
+            }
+            
+            /* Estilo do menu deslizante mobile */
+            .nav-links {
+                position: absolute;
+                top: 80px; /* Fica abaixo do header */
+                left: -100%; /* Começa escondido fora da tela */
+                width: 100%;
+                background-color: var(--white);
+                flex-direction: column;
+                align-items: center;
+                padding: 30px 0;
+                gap: 25px;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+                transition: 0.3s ease-in-out;
+            }
+            
+            .nav-links.active {
+                left: 0; /* Traz o menu para dentro da tela */
+            }
+
+            .nav-links li a {
+                font-size: 1.1rem; /* Letra maior no mobile para clique fácil */
+            }
+
+            /* Outros ajustes de seção para celular */
             .hero-container { flex-direction: column; text-align: center; }
             .hero-buttons { justify-content: center; }
             .hero-checks { justify-content: center; }
@@ -604,6 +647,10 @@
                 <li><a href="#contato">Contato</a></li>
             </ul>
             <a href="#contato" class="btn btn-orange">Solicitar Avaliação ></a>
+
+            <div class="hamburger">
+                <i class="fa-solid fa-bars"></i>
+            </div>
         </div>
     </header>
 
@@ -838,5 +885,34 @@
         </div>
     </footer>
 
+    <script>
+        const hamburger = document.querySelector(".hamburger");
+        const navLinks = document.querySelector(".nav-links");
+        const links = document.querySelectorAll(".nav-links li a");
+        const hamburgerIcon = document.querySelector(".hamburger i");
+
+        // Abre e fecha o menu ao clicar no ícone de hambúrguer
+        hamburger.addEventListener("click", () => {
+            navLinks.classList.toggle("active");
+            
+            // Alterna o ícone entre 'Barras' e 'X'
+            if (navLinks.classList.contains("active")) {
+                hamburgerIcon.classList.remove("fa-bars");
+                hamburgerIcon.classList.add("fa-xmark");
+            } else {
+                hamburgerIcon.classList.remove("fa-xmark");
+                hamburgerIcon.classList.add("fa-bars");
+            }
+        });
+
+        // Fecha o menu automaticamente após clicar num link (ancora)
+        links.forEach(link => {
+            link.addEventListener("click", () => {
+                navLinks.classList.remove("active");
+                hamburgerIcon.classList.remove("fa-xmark");
+                hamburgerIcon.classList.add("fa-bars");
+            });
+        });
+    </script>
 </body>
 </html>
