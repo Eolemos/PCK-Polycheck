@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCK PolyCheck - Validação Técnica em Poliureia</title>
+    <link rel="icon" type="image/png" href="source/img/logo-semfundo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ================= VARIÁVEIS E RESET ================= */
+        :root {
+            --primary-blue: #0b2241;
+            --orange: #fc6011;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
+            --border-color: #e0e0e0;
+        }
+
+        /* ATENÇÃO AQUI: scroll-behavior torna o deslizamento suave */
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px; /* Evita que o topo da seção fique escondido atrás do menu fixo */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            color: var(--text-dark);
+            line-height: 1.6;
+            background-color: var(--white);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ================= BOTÕES ================= */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-orange {
+            background-color: var(--orange);
+            color: var(--white);
+            border: 2px solid var(--orange);
+        }
+
+        .btn-orange:hover {
+            background-color: #e5530b;
+        }
+
+        .btn-outline-green {
+            background-color: var(--white);
+            color: #25D366;
+            border: 2px solid #25D366;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-outline-green:hover {
+            background-color: #25D366;
+            color: var(--white);
+        }
+
+        /* ================= CABEÇALHO (HEADER) ================= */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        /* AJUSTE DA LOGO */
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            max-height: 70px; /* Define a altura da sua logo para caber no menu */
+            width: auto;      /* Mantém a proporção da largura */
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links li a {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--primary-blue);
+            transition: color 0.2s;
+        }
+
+        .nav-links li a:hover {
+            color: var(--orange);
+        }
+
+        /* ================= HERO SECTION ================= */
+        .hero {
+            padding: 60px 0;
+            background: linear-gradient(to right, #ffffff 50%, #f4f6f8 100%);
+        }
+
+        .hero-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-text h1 {
+            font-size: 3rem;
+            color: var(--primary-blue);
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-text h1 span {
+            color: var(--orange);
+        }
+
+        .hero-text h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .hero-text p {
+            color: var(--text-light);
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .hero-checks {
+            display: flex;
+            gap: 20px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            font-weight: 600;
+            flex-wrap: wrap;
+        }
+
+        .hero-checks i {
+            color: var(--primary-blue);
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* ================= 4 PILLARS ================= */
+        .pillars {
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .pillar-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .pillar-icon {
+            font-size: 2rem;
+            color: var(--primary-blue);
+        }
+
+        .pillar-text h4 {
+            font-size: 0.9rem;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+        }
+
+        .pillar-text p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* ================= SERVIÇOS E CONTROLES ================= */
+        .services {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-blue);
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 20px;
+        }
+
+        .service-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--bg-light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--orange);
+            border: 1px solid var(--border-color);
+        }
+
+        .service-item p {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            line-height: 1.2;
+        }
+
+        /* ================= DARK BLUE SECTION (GARANTIA) ================= */
+        .dark-section {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .dark-section .section-title {
+            color: var(--white);
+        }
+
+        .dark-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 20px;
+        }
+
+        .dark-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .dark-icon {
+            font-size: 2.5rem;
+            color: var(--white);
+        }
+
+        .dark-item p {
+            font-size: 0.8rem;
+            line-height: 1.3;
+        }
+
+        /* ================= BANNERS MEIO (EDUCACIONAL) ================= */
+        .banners {
+            padding: 40px 0;
+        }
+
+        .banners-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .banner-box {
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .banner-icon {
+            font-size: 3rem;
+            color: var(--primary-blue);
+        }
+
+        .banner-text h4 {
+            color: var(--primary-blue);
+            margin-bottom: 5px;
+        }
+
+        .banner-text p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        /* ================= DIFERENCIAIS ================= */
+        .diferenciais {
+            padding: 20px 0 60px;
+            text-align: center;
+        }
+
+        .diff-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
+        }
+
+        .diff-item {
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        
+        .diff-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .diff-item i {
+            font-size: 2rem;
+            color: var(--primary-blue);
+            margin-bottom: 15px;
+        }
+
+        .diff-item h4 {
+            font-size: 0.85rem;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .diff-item p {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        /* ================= PROFILE ENG (CONTATO) - CORRIGIDO ================= */
+        .profile-section {
+            background-color: var(--bg-light);
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap; /* Correção: Permite quebra de linha se faltar espaço */
+            max-width: 1200px;
+            margin: 0 auto 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .profile-img {
+            flex: 1 1 300px; /* Correção: Ajuste flexível */
+            background: url('source/img/inspiraçao.jpeg') center/cover;
+            min-height: 300px;
+        }
+
+        .profile-info {
+            flex: 2 1 400px; /* Correção: Ajuste flexível */
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .profile-info h3 {
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .profile-contact {
+            display: flex;
+            flex-wrap: wrap; /* Evita que o número e o texto quebrem feio em telas médias */
+            gap: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        .profile-contact i {
+            color: var(--primary-blue);
+        }
+
+        .profile-box {
+            flex: 1 1 300px; /* Correção: Ajuste flexível */
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .profile-box h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .profile-box p {
+            font-size: 0.85rem;
+            color: #d1d8e0;
+        }
+
+        /* ================= CTA FOOTER ================= */
+        .cta-bottom {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 40px 0;
+        }
+
+        .cta-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cta-text h2 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .cta-text p {
+            font-size: 0.9rem;
+            color: #d1d8e0;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* ================= FOOTER ================= */
+        footer {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 40px 0 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-logo img {
+            max-height: 50px;
+            width: auto;
+        }
+
+        .footer-links h5 {
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .footer-links ul {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: #d1d8e0;
+        }
+
+        .footer-links ul li a:hover {
+            color: var(--orange);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-icons i {
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .copyright {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #d1d8e0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+        }
+
+        /* ================= RESPONSIVIDADE ================= */
+        @media (max-width: 1024px) {
+            .services-grid, .dark-grid { grid-template-columns: repeat(4, 1fr); }
+            .diff-grid { grid-template-columns: repeat(3, 1fr); }
+            .profile-section { flex-direction: column; }
+            .profile-img, .profile-info, .profile-box { flex: 1 1 auto; width: 100%; }
+            .profile-img { min-height: 300px; }
+        }
+
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; height: auto; padding: 15px 0; gap: 15px; }
+            .nav-links { display: none; }
+            .hero-container { flex-direction: column; text-align: center; }
+            .hero-buttons { justify-content: center; }
+            .hero-checks { justify-content: center; }
+            .pillars-grid { grid-template-columns: 1fr 1fr; }
+            .banners-grid { grid-template-columns: 1fr; }
+            .cta-container { flex-direction: column; text-align: center; gap: 20px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 480px) {
+            .pillars-grid { grid-template-columns: 1fr; }
+            .services-grid, .dark-grid { grid-template-columns: repeat(2, 1fr); }
+            .diff-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .social-icons { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <a href="#">
+                    <img src="source/img/logo.png" alt="PCK PolyCheck Logo">
+                </a>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#">Início</a></li>
+                <li><a href="#servicos">Serviços <i class="fa-solid fa-chevron-down" style="font-size: 0.7rem;"></i></a></li>
+                <li><a href="#garantia">Garantia</a></li>
+                <li><a href="#diferenciais">Diferenciais</a></li>
+                <li><a href="#educacional">Educacional</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+            <a href="#contato" class="btn btn-orange">Solicitar Avaliação ></a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-container">
+            <div class="hero-text">
+                <h1>Validação Técnica <br>em <span>Poliureia</span></h1>
+                <h3>Conformidade normativa, controle tecnológico e rastreabilidade completa para sua obra.</h3>
+                <p>A PCK PolyCheck atua com inspeção, ensaios e validação técnica de sistemas em poliureia, oferecendo controle tecnológico, verificação de conformidade, documentação técnica e suporte à qualidade, desempenho, garantia e tomada de decisão.</p>
+                
+                <div class="hero-buttons">
+                    <a href="#contato" class="btn btn-orange">Solicitar Avaliação Técnica ></a>
+                    <a href="https://wa.me/5511966406212" target="_blank" class="btn btn-outline-green"><i class="fa-brands fa-whatsapp"></i> Falar no WhatsApp</a>
+                </div>
+                
+                <div class="hero-checks">
+                    <span><i class="fa-solid fa-circle-check"></i> Atuação nacional</span>
+                    <span><i class="fa-solid fa-circle-check"></i> Métodos normatizados</span>
+                    <span><i class="fa-solid fa-file-contract"></i> Relatórios e Data Book</span>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="source/img/prop.png" alt="Ilustração Técnica Poliureia">
+            </div>
+        </div>
+    </section>
+
+    <section class="pillars">
+        <div class="container pillars-grid">
+            <div class="pillar-item">
+                <i class="fa-solid fa-shield-halved pillar-icon"></i>
+                <div class="pillar-text">
+                    <h4>Conformidade</h4>
+                    <p>Segurança e atendimento normativo</p>
+                </div>
+            </div>
+            <div class="pillar-item">
+                <i class="fa-solid fa-chart-line pillar-icon"></i>
+                <div class="pillar-text">
+                    <h4>Controle</h4>
+                    <p>Dados confiáveis para decisões assertivas</p>
+                </div>
+            </div>
+            <div class="pillar-item">
+                <i class="fa-solid fa-clipboard-list pillar-icon"></i>
+                <div class="pillar-text">
+                    <h4>Rastreabilidade</h4>
+                    <p>Registros completos e organizados</p>
+                </div>
+            </div>
+            <div class="pillar-item">
+                <i class="fa-solid fa-award pillar-icon"></i>
+                <div class="pillar-text">
+                    <h4>Qualidade</h4>
+                    <p>Desempenho e garantia do sistema</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicos" class="services">
+        <div class="container">
+            <h2 class="section-title">Serviços e Controles</h2>
+            <div class="services-grid">
+                <div class="service-item"><div class="service-icon"><i class="fa-solid fa-clipboard-check"></i></div><p>Inspeção<br>pré-aplicação</p></div>
+                <div class="service-item"><div class="service-icon"><i class="fa-solid fa-file-signature"></i></div><p>Conferência de<br>especificações e escopos</p></div>
+                <div class="service-item"><div class="service-icon"><i class="fa-solid fa-layer-group"></i></div><p>Verificação do tipo<br>de substrato</p></div>
+                <div class="service-item"><div class="service-icon"><i class="fa-solid fa-helmet-safety"></i></div><p>Avaliação de<br>equipamentos e mão de obra</p></div>
+                <div class="service-item"><div class="service-icon"><i class="fa-solid fa-chart-bar"></i></div><p>Controle de<br>quantitativos e consumos</p></div>
+                <div class="service-item"><div class="service-icon"><i class="fa-regular fa-calendar-check"></i></div><p>Controle de<br>prazos de validade</p></div>
+                <div class="service-item"><div class="service-icon"><i class="fa-solid fa-user-check"></i></div><p>Acompanhamento<br>técnico da aplicação</p></div>
+                
+                <div class="service-item"><div class="service-icon"><i class="fa-solid fa-temperature-half"></i></div><p>Controle de ponto de<br>orvalho e condições climáticas</p></div>
+                <div class="service-item"><div class="service-icon"><i class="fa-solid fa-wind"></i></div><p>Medição de vento<br>e salinidade</p></div>
+                <div class="service-item"><div class="service-icon"><i class="fa-solid fa-ruler-combined"></i></div><p>Controle de<br>espessura</p></div>
+                <div class="service-item"><div class="service-icon"><i class="fa-solid fa-bolt"></i></div><p>Ensaios com<br>Holiday Detector</p></div>
+                <div class="service-item"><div class="service-icon"><i class="fa-solid fa-compress"></i></div><p>Teste de<br>aderência (Pull-Off)</p></div>
+                <div class="service-item"><div class="service-icon"><i class="fa-solid fa-list-check"></i></div><p>Liberação<br>de etapas</p></div>
+                <div class="service-item"><div class="service-icon"><i class="fa-solid fa-file-invoice"></i></div><p>Relatórios<br>técnicos e Data Book</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="garantia" class="dark-section">
+        <div class="container">
+            <h2 class="section-title" style="font-size: 1.4rem;">Garantia, Conformidade e Suporte</h2>
+            <div class="dark-grid">
+                <div class="dark-item"><i class="fa-solid fa-shield-check dark-icon"></i><p>Atendimento às exigências das normas de impermeabilização, poliureia e desempenho</p></div>
+                <div class="dark-item"><i class="fa-solid fa-handshake dark-icon"></i><p>Validação com fornecedores para garantias</p></div>
+                <div class="dark-item"><i class="fa-solid fa-shield dark-icon"></i><p>Controle durante todo o período de garantia</p></div>
+                <div class="dark-item"><i class="fa-solid fa-magnifying-glass dark-icon"></i><p>Investigação e solução de anomalias</p></div>
+                <div class="dark-item"><i class="fa-solid fa-folder-open dark-icon"></i><p>Rastreabilidade técnica completa</p></div>
+                <div class="dark-item"><i class="fa-solid fa-headset dark-icon"></i><p>Suporte à qualidade e desempenho</p></div>
+                <div class="dark-item"><i class="fa-solid fa-graduation-cap dark-icon"></i><p>Atendimento educacional</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="educacional" class="banners">
+        <div class="container banners-grid">
+            <div class="banner-box">
+                <i class="fa-solid fa-users banner-icon" style="color: var(--orange);"></i>
+                <div class="banner-text">
+                    <h4>SUPORTE A PROJETISTAS, APLICADORES E DEPARTAMENTOS DE ENGENHARIA</h4>
+                    <p>Parceria técnica para mais segurança, desempenho e confiabilidade em seu projeto.</p>
+                </div>
+            </div>
+            <div class="banner-box">
+                <i class="fa-solid fa-book-open-reader banner-icon"></i>
+                <div class="banner-text">
+                    <h4>ATENDIMENTO EDUCACIONAL</h4>
+                    <p>Treinamentos, capacitções e materiais para elevar o nível técnico das equipes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="diferenciais" class="diferenciais">
+        <div class="container">
+            <h2 class="section-title">Diferenciais</h2>
+            <div class="diff-grid">
+                <div class="diff-item">
+                    <i class="fa-solid fa-user-tie"></i>
+                    <h4>Independência Técnica</h4>
+                    <p>Atuação imparcial e orientada à qualidade.</p>
+                </div>
+                <div class="diff-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <h4>Controle Tecnológico</h4>
+                    <p>Ensaios e processos alinhados às melhores práticas.</p>
+                </div>
+                <div class="diff-item">
+                    <i class="fa-solid fa-folder-tree"></i>
+                    <h4>Rastreabilidade</h4>
+                    <p>Registros completos e organizados de cada etapa do processo.</p>
+                </div>
+                <div class="diff-item">
+                    <i class="fa-solid fa-clipboard-check" style="color: var(--orange);"></i>
+                    <h4>Liberação de Etapas</h4>
+                    <p>Critérios técnicos claros para avançar com segurança.</p>
+                </div>
+                <div class="diff-item">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h4>Suporte à Garantia</h4>
+                    <p>Documentação técnica robusta para embasar garantias.</p>
+                </div>
+                <div class="diff-item">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <h4>Decisão com Base Técnica</h4>
+                    <p>Informações confiáveis para decisões estratégicas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contato" class="container">
+        <div class="profile-section">
+            <div class="profile-img"></div>
+            <div class="profile-info">
+                <h3>Eng. Carlos Eugenio</h3>
+                <div class="profile-contact">
+                    <span><i class="fa-brands fa-whatsapp"></i> 11 96640-6212</span>
+                    <span><i class="fa-solid fa-star"></i> 17 anos de experiência em poliureia</span>
+                </div>
+                <p style="font-size: 0.9rem; color: var(--text-light);">Suporte técnico especializado para construtoras, indústrias, condomínios, obras corporativas, projetistas, aplicadores e departamentos de engenharia.</p>
+            </div>
+            <div class="profile-box">
+                <i class="fa-solid fa-shield-check" style="font-size: 2rem; color: var(--orange); margin-bottom: 15px;"></i>
+                <h4>FOCO EM RESULTADOS QUE GERAM CONFIANÇA</h4>
+                <p>Mais desempenho, menos risco. Conformidade e controle em cada etapa da obra.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-bottom">
+        <div class="container cta-container">
+            <div class="cta-text">
+                <h2>PRONTO PARA ELEVAR O NÍVEL TÉCNICO DA SUA OBRA?</h2>
+                <p>Solicite uma avaliação técnica com a PCK PolyCheck.</p>
+            </div>
+            <div class="cta-buttons">
+                <a href="#contato" class="btn btn-orange">Solicitar Avaliação Técnica ></a>
+                <a href="https://wa.me/5511966406212" target="_blank" class="btn btn-outline-green" style="color: var(--primary-blue); border-color: var(--white);"><i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> Falar no WhatsApp</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-logo">
+                        <img src="source/img/logo-semfundo.png" alt="PCK PolyCheck Logo">
+                    </div>
+                    <p style="font-size: 0.7rem; color: #d1d8e0; margin-top: 10px;">INSPEÇÃO, ENSAIOS E VALIDAÇÃO<br>TÉCNICA EM POLIUREIA</p>
+                </div>
+                <div class="footer-links">
+                    <h5>NAVEGAÇÃO</h5>
+                    <div style="display: flex; gap: 40px;">
+                        <ul>
+                            <li><a href="#">Início</a></li>
+                            <li><a href="#servicos">Serviços</a></li>
+                            <li><a href="#garantia">Garantia</a></li>
+                        </ul>
+                        <ul>
+                            <li><a href="#diferenciais">Diferenciais</a></li>
+                            <li><a href="#educacional">Educacional</a></li>
+                            <li><a href="#contato">Contato</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h5>CONTATO</h5>
+                    <ul>
+                        <li><i class="fa-brands fa-whatsapp"></i> 11 96640-6212</li>
+                        <li><i class="fa-regular fa-envelope"></i> contato@pckpolycheck.com.br</li>
+                        <li><i class="fa-solid fa-location-dot"></i> Atuação nacional</li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h5>SIGA-NOS</h5>
+                    <div class="social-icons">
+                        <i class="fa-brands fa-linkedin"></i>
+                        <i class="fa-brands fa-instagram"></i>
+                        <i class="fa-brands fa-youtube"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2026 PCK PolyCheck. Todos os direitos reservados.
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
